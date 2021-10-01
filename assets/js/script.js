@@ -1,6 +1,9 @@
 var taskIdCounter =0;
+//targets form
 var formEl = document.querySelector("#task-form");
+//targets ul in html
 var tasksToDoEl = document.querySelector("#tasks-to-do");
+var pageContentEl = document.getElementById("page-content");
 
 var taskFormHandler = function(event) {
   event.preventDefault();
@@ -42,9 +45,9 @@ var createTaskEl = function(taskDataObj) {
     listItemEl.appendChild(taskInfoEl);
 
     var taskActionsEl = createTaskActions(taskIdCounter);
-    console.log(taskActionsEl);
     // add list item to list
-    tasksToDoEl.appendChild(taskActionsEl);
+    tasksToDoEl.appendChild(listItemEl);
+    listItemEl.appendChild(taskActionsEl);
 
     //increase task counter for next unique id
     taskIdCounter++;
@@ -91,6 +94,27 @@ var createTaskActions = function(taskId) {
 
     actionContainerEl.appendChild(statusSelectEl);
     return actionContainerEl;
+
 }
 
 formEl.addEventListener("submit", taskFormHandler);
+
+//Function to run when something is clicked in the "main" element are clicked.
+var taskButtonHandler = function(event) {
+
+    if (event.target.matches(".delete-btn")) {
+        // get the element's task id
+        var taskId = event.target.getAttribute("data-task-id");
+        deleteTask(taskId);
+    };
+};
+
+var deleteTask = function(taskId) {
+    var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
+    taskSelected.remove();
+};
+
+//Listen for clicks in the "main" element
+pageContentEl.addEventListener("click", taskButtonHandler);
+
+
